@@ -2,24 +2,8 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/(.*)",
       "destination": "/api/index.py"
-    },
-    {
-      "source": "/static/(.*)",
-      "destination": "/web/$1"
-    },
-    {
-      "source": "/manifest.json",
-      "destination": "/web/manifest.json"
-    },
-    {
-      "source": "/icon.png",
-      "destination": "/web/icon.png"
-    },
-    {
-      "source": "/",
-      "destination": "/web/index.html"
     }
   ]
 }
