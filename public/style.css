@@ -256,20 +256,29 @@ body {
 .textarea_input,
 .date_input {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background: var(--bg_input);
   border: 1px solid var(--bg_card_border);
   color: var(--text_primary);
   border-radius: var(--radius_md);
-  padding: 12px 14px;
-  font-size: 0.95rem;
+  padding: 12px 12px;
+  font-size: 0.92rem;
   transition: all var(--transition_fast);
   outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.date_input::-webkit-calendar-picker-indicator {
+  filter: invert(0.85);
+  cursor: pointer;
 }
 
 .main_title_input {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  padding: 14px 16px;
+  padding: 14px 14px;
 }
 
 .text_input:focus,
@@ -341,11 +350,13 @@ body {
    ========================================================================== */
 .date_input_group {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  width: 100%;
 }
 
 .date_field {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
