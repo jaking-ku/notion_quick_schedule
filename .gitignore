@@ -1,0 +1,21 @@
+# 환경 변수 및 보안 키
+.env
+.env.local
+
+# 파이썬 캐시 및 가상환경
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# IDE 및 OS 파일
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 임시 파일
+scratch_notion.json

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="노션등록">
+  <meta name="theme-color" content="#0a0e14">
+  <title>Notion Quick Schedule</title>
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app_container">
+    
+    <!-- 상단 헤더 -->
+    <header class="app_header">
+      <div class="header_content">
+        <div class="header_logo">
+          <span class="logo_icon">⚡</span>
+          <h1>노션 퀵 일정</h1>
+        </div>
+        <div id="connection_badge" class="badge_online">
+          <span class="status_dot"></span>
+          <span id="badge_text">연결됨</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 메인 입력 폼 -->
+    <main class="main_content">
+      <form id="schedule_form" autocomplete="off">
+        
+        <!-- 1. 분류 선택 (5대 분류 원터치 칩) -->
+        <section class="form_section">
+          <label class="section_label">분류 선택</label>
+          <div class="category_grid">
+            <button type="button" class="category_chip active" data-category="회사 : 작업" data-color="tomato">
+              <span class="chip_indicator"></span>
+              <span class="chip_text">회사 : 작업</span>
+            </button>
+            <button type="button" class="category_chip" data-category="회사 : 사무" data-color="blueberry">
+              <span class="chip_indicator"></span>
+              <span class="chip_text">회사 : 사무</span>
+            </button>
+            <button type="button" class="category_chip" data-category="LIFE" data-color="basil">
+              <span class="chip_indicator"></span>
+              <span class="chip_text">LIFE</span>
+            </button>
+            <button type="button" class="category_chip" data-category="분류대기" data-color="graphite">
+              <span class="chip_indicator"></span>
+              <span class="chip_text">분류대기</span>
+            </button>
+            <button type="button" class="category_chip" data-category="업무보류" data-color="lavender">
+              <span class="chip_indicator"></span>
+              <span class="chip_text">업무보류</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 2. 일정 제목 입력 -->
+        <section class="form_section">
+          <label class="section_label" for="input_title">일정 제목 <span class="required_mark">*</span></label>
+          <div class="input_wrapper">
+            <input 
+              type="text" 
+              id="input_title" 
+              class="text_input main_title_input" 
+              placeholder="무엇을 해야 하나요?" 
+              required
+              autofocus
+            >
+          </div>
+        </section>
+
+        <!-- 3. 날짜 및 시간 설정 -->
+        <section class="form_section">
+          <div class="section_header_row">
+            <label class="section_label">일시 설정</label>
+            <label class="ios_toggle_wrapper">
+              <span class="toggle_label">종일 일정</span>
+              <input type="checkbox" id="toggle_all_day" checked>
+              <span class="toggle_slider"></span>
+            </label>
+          </div>
+
+          <div class="date_input_group">
+            <!-- 시작일 -->
+            <div class="date_field">
+              <label class="field_sublabel" id="label_start_date">날짜</label>
+              <input type="date" id="input_start_date" class="date_input" required>
+            </div>
+
+            <!-- 시작 시간 (시간 설정 시 표시) -->
+            <div class="date_field time_field hidden" id="wrapper_start_time">
+              <label class="field_sublabel">시작 시간</label>
+              <input type="time" id="input_start_time" class="date_input">
+            </div>
+          </div>
+
+          <!-- 기간(종료일) 추가 옵션 토글 -->
+          <div class="range_toggle_row">
+            <button type="button" id="btn_toggle_end_date" class="btn_text_toggle">
+              <span class="plus_icon">+</span> 기간(종료일) 추가
+            </button>
+          </div>
+
+          <!-- 종료일 영역 (기본 숨김) -->
+          <div class="date_input_group hidden" id="wrapper_end_date_group">
+            <div class="date_field">
+              <label class="field_sublabel">종료 날짜</label>
+              <input type="date" id="input_end_date" class="date_input">
+            </div>
+            <div class="date_field time_field hidden" id="wrapper_end_time">
+              <label class="field_sublabel">종료 시간</label>
+              <input type="time" id="input_end_time" class="date_input">
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. 상세 메모 (선택 사항) -->
+        <section class="form_section">
+          <div class="section_header_row">
+            <label class="section_label" for="input_memo">상세 메모 (선택)</label>
+          </div>
+          <div class="input_wrapper">
+            <textarea 
+              id="input_memo" 
+              class="textarea_input" 
+              rows="2" 
+              placeholder="링크, 티켓 번호, 간단한 메모를 입력하세요"
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- 5. 등록 버튼 -->
+        <div class="submit_wrapper">
+          <button type="submit" id="btn_submit" class="btn_primary">
+            <span class="btn_icon">🚀</span>
+            <span class="btn_text">노션에 바로 등록</span>
+            <span class="btn_loader hidden" id="submit_loader"></span>
+          </button>
+        </div>
+
+      </form>
+    </main>
+
+    <!-- 하단 상태 및 도움말 -->
+    <footer class="app_footer">
+      <p class="footer_text">아이폰 Safari 공유 버튼에서 <strong>'홈 화면에 추가'</strong>를 누르시면 앱처럼 사용하실 수 있습니다.</p>
+    </footer>
+
+    <!-- 알림 토스트 메시지 -->
+    <div id="toast_container" class="toast_container"></div>
+
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
