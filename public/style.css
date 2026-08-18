@@ -1,0 +1,504 @@
+/* ==========================================================================
+   Notion Quick Schedule Mobile Design System
+   iOS HIG Inspired Dark Mode & Glassmorphism
+   ========================================================================== */
+
+:root {
+  --bg_main: #0a0d14;
+  --bg_card: rgba(22, 27, 34, 0.85);
+  --bg_card_border: rgba(255, 255, 255, 0.08);
+  --bg_input: rgba(13, 17, 23, 0.95);
+  --bg_input_focus: rgba(26, 32, 44, 0.95);
+  
+  --text_primary: #f0f6fc;
+  --text_secondary: #8b949e;
+  --text_muted: #484f58;
+
+  /* 5대 분류 색상 토큰 */
+  --color_tomato: #ff453a;
+  --color_blueberry: #0a84ff;
+  --color_basil: #30d158;
+  --color_graphite: #8e8e93;
+  --color_lavender: #bf5af2;
+  
+  --accent_primary: #3b82f6;
+  --accent_glow: rgba(59, 130, 246, 0.35);
+
+  --radius_lg: 20px;
+  --radius_md: 14px;
+  --radius_sm: 10px;
+
+  --transition_fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition_normal: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--bg_main);
+  color: var(--text_primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: env(safe-area-inset-top, 20px) 16px env(safe-area-inset-bottom, 24px) 16px;
+  overflow-x: hidden;
+}
+
+.app_container {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ==========================================================================
+   헤더 영역
+   ========================================================================== */
+.app_header {
+  padding: 12px 6px 4px 6px;
+}
+
+.header_content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header_logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo_icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.4));
+}
+
+.header_logo h1 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.badge_online {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(48, 209, 88, 0.12);
+  color: #30d158;
+  border: 1px solid rgba(48, 209, 88, 0.25);
+}
+
+.badge_offline {
+  background: rgba(255, 69, 58, 0.12);
+  color: #ff453a;
+  border-color: rgba(255, 69, 58, 0.25);
+}
+
+.status_dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* ==========================================================================
+   메인 폼 카드 & 섹션
+   ========================================================================== */
+.main_content {
+  background: var(--bg_card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--bg_card_border);
+  border-radius: var(--radius_lg);
+  padding: 22px 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+#schedule_form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form_section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section_label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text_secondary);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.required_mark {
+  color: var(--color_tomato);
+}
+
+.section_header_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ==========================================================================
+   1. 5대 분류 칩 그리드
+   ========================================================================== */
+.category_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.category_chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: var(--text_secondary);
+  padding: 10px 6px;
+  border-radius: var(--radius_md);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all var(--transition_fast);
+  outline: none;
+  min-height: 44px;
+}
+
+.category_chip:active {
+  transform: scale(0.96);
+}
+
+.chip_indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* 각 칩별 인디케이터 색상 */
+.category_chip[data-color="tomato"] .chip_indicator { background-color: var(--color_tomato); }
+.category_chip[data-color="blueberry"] .chip_indicator { background-color: var(--color_blueberry); }
+.category_chip[data-color="basil"] .chip_indicator { background-color: var(--color_basil); }
+.category_chip[data-color="graphite"] .chip_indicator { background-color: var(--color_graphite); }
+.category_chip[data-color="lavender"] .chip_indicator { background-color: var(--color_lavender); }
+
+/* 활성 상태 칩 스타일 */
+.category_chip.active {
+  color: #ffffff;
+  border-color: currentColor;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.category_chip.active[data-color="tomato"] {
+  background: rgba(255, 69, 58, 0.18);
+  border-color: var(--color_tomato);
+  box-shadow: 0 0 16px rgba(255, 69, 58, 0.3);
+}
+
+.category_chip.active[data-color="blueberry"] {
+  background: rgba(10, 132, 255, 0.18);
+  border-color: var(--color_blueberry);
+  box-shadow: 0 0 16px rgba(10, 132, 255, 0.3);
+}
+
+.category_chip.active[data-color="basil"] {
+  background: rgba(48, 209, 88, 0.18);
+  border-color: var(--color_basil);
+  box-shadow: 0 0 16px rgba(48, 209, 88, 0.3);
+}
+
+.category_chip.active[data-color="graphite"] {
+  background: rgba(142, 142, 147, 0.18);
+  border-color: var(--color_graphite);
+  box-shadow: 0 0 16px rgba(142, 142, 147, 0.3);
+}
+
+.category_chip.active[data-color="lavender"] {
+  background: rgba(191, 90, 242, 0.18);
+  border-color: var(--color_lavender);
+  box-shadow: 0 0 16px rgba(191, 90, 242, 0.3);
+}
+
+/* ==========================================================================
+   2. 입력 필드 (제목, 메모, 날짜)
+   ========================================================================== */
+.input_wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.text_input,
+.textarea_input,
+.date_input {
+  width: 100%;
+  background: var(--bg_input);
+  border: 1px solid var(--bg_card_border);
+  color: var(--text_primary);
+  border-radius: var(--radius_md);
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  transition: all var(--transition_fast);
+  outline: none;
+}
+
+.main_title_input {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 14px 16px;
+}
+
+.text_input:focus,
+.textarea_input:focus,
+.date_input:focus {
+  background: var(--bg_input_focus);
+  border-color: var(--accent_primary);
+  box-shadow: 0 0 0 3px var(--accent_glow);
+}
+
+.textarea_input {
+  resize: vertical;
+  min-height: 64px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   3. iOS 스타일 토글 스위치
+   ========================================================================== */
+.ios_toggle_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.toggle_label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text_secondary);
+}
+
+.ios_toggle_wrapper input {
+  display: none;
+}
+
+.toggle_slider {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  background-color: rgba(255, 255, 255, 0.16);
+  border-radius: 13px;
+  transition: background-color var(--transition_fast);
+}
+
+.toggle_slider::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform var(--transition_fast);
+}
+
+.ios_toggle_wrapper input:checked + .toggle_slider {
+  background-color: var(--accent_primary);
+}
+
+.ios_toggle_wrapper input:checked + .toggle_slider::after {
+  transform: translateX(18px);
+}
+
+/* ==========================================================================
+   4. 날짜 및 시간 그룹
+   ========================================================================== */
+.date_input_group {
+  display: flex;
+  gap: 10px;
+}
+
+.date_field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field_sublabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text_muted);
+}
+
+.range_toggle_row {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: -2px;
+}
+
+.btn_text_toggle {
+  background: none;
+  border: none;
+  color: var(--accent_primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.plus_icon {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   5. 등록 버튼
+   ========================================================================== */
+.submit_wrapper {
+  margin-top: 6px;
+}
+
+.btn_primary {
+  width: 100%;
+  height: 52px;
+  border-radius: var(--radius_md);
+  border: none;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  transition: all var(--transition_fast);
+}
+
+.btn_primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
+}
+
+.btn_primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn_loader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   6. 푸터 및 헬퍼
+   ========================================================================== */
+.app_footer {
+  text-align: center;
+  padding: 0 10px;
+}
+
+.footer_text {
+  font-size: 0.78rem;
+  color: var(--text_muted);
+  line-height: 1.4;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   7. 토스트 알림
+   ========================================================================== */
+.toast_container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: calc(100% - 32px);
+  max-width: 420px;
+  pointer-events: none;
+}
+
+.toast_item {
+  background: rgba(22, 27, 34, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 14px 18px;
+  border-radius: var(--radius_md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  animation: toast_slide_up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast_success {
+  border-color: rgba(48, 209, 88, 0.4);
+  color: #30d158;
+}
+
+.toast_error {
+  border-color: rgba(255, 69, 58, 0.4);
+  color: #ff453a;
+}
+
+@keyframes toast_slide_up {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
