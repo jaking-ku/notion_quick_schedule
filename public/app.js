@@ -114,24 +114,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6. 서버 헬스체크 및 노션 연동 상태 조회
   async function checkServerHealth() {
-    try {
-      const res = await fetch('/api/health');
-      if (res.ok) {
-        const data = await res.json();
-        if (data.notion_status && data.notion_status.success) {
-          connectionBadge.className = 'badge_online';
-          badgeText.textContent = '노션 연결됨';
-        } else if (!data.notion_configured) {
-          connectionBadge.className = 'badge_offline';
-          badgeText.textContent = '토큰 미설정';
-        } else {
-          connectionBadge.className = 'badge_offline';
-          badgeText.textContent = '권한 확인 필요';
+    const endpoints = ['/api/health', '/health', '/api'];
+    let data = null;
+
+    for (const url of endpoints) {
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          data = await res.json();
+          break;
         }
+      } catch (e) {
+        // 다음 엔드포인트 시도
       }
-    } catch (err) {
+    }
+
+    if (data) {
+      if (data.notion_status && data.notion_status.success) {
+        connectionBadge.className = 'badge_online';
+        badgeText.textContent = '노션 연결됨';
+      } else if (!data.notion_configured) {
+        connectionBadge.className = 'badge_offline';
+        badgeText.textContent = '토큰 미설정';
+      } else {
+        connectionBadge.className = 'badge_offline';
+        badgeText.textContent = '권한 확인 필요';
+      }
+    } else {
       connectionBadge.className = 'badge_offline';
-      badgeText.textContent = '서버 오프라인';
+      badgeText.textContent = '서버 확인 필요';
     }
   }
 
@@ -178,17 +189,33 @@ document.addEventListener('DOMContentLoaded', () => {
     submitLoader.classList.remove('hidden');
 
     try {
-      const response = await fetch('/api/schedule', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+      const endpoints = ['/api/schedule', '/schedule', '/api'];
+      let lastResponse = null;
+      let lastResult = null;
 
-      const result = await response.json();
+      for (const ep of endpoints) {
+        try {
+          const res = await fetch(ep, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+          lastResponse = res;
+          lastResult = await res.json();
+          if (res.ok && lastResult.success) {
+            break;
+          }
+          if (res.status !== 404) {
+            break;
+          }
+        } catch (err) {
+          // 다음 엔드포인트 시도
+        }
+      }
 
-      if (response.ok && result.success) {
+      if (lastResponse && lastResponse.ok && lastResult && lastResult.success) {
         showToast('노션에 일정이 등록되었습니다!', 'success');
         
         if (navigator.vibrate) {
@@ -200,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         inputMemo.value = '';
         inputTitle.focus();
       } else {
-        const errorMsg = result.error || result.detail || '등록에 실패했습니다.';
+        const errorMsg = (lastResult && (lastResult.error || lastResult.detail)) || '등록에 실패했습니다.';
         showToast(`등록 실패: ${errorMsg}`, 'error');
       }
     } catch (error) {

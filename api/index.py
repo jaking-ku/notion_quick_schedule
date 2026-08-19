@@ -65,6 +65,8 @@ class ScheduleRequest(BaseModel):
     memo: Optional[str] = Field(None, description="상세 메모")
 
 @app.get("/api/health")
+@app.get("/health")
+@app.get("/")
 async def check_health():
     """서버 상태 및 노션 API 연동 여부 확인"""
     token = get_token()
@@ -103,6 +105,8 @@ async def check_health():
         }
 
 @app.post("/api/schedule")
+@app.post("/schedule")
+@app.post("/")
 async def create_schedule(req: ScheduleRequest):
     """모바일에서 전송된 일정을 노션 todolist 2 DB에 등록"""
     token = get_token()
